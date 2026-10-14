@@ -1,0 +1,54 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f2f6ff;
+  padding-top: 70px;
+}
+
+.custom-navbar {
+  background: linear-gradient(90deg, #1e3c72, #2a5298);
+}
+
+.search-box {
+  max-width: 220px;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+}
+
+#authView .card,
+#appView {
+  animation: fadeUp 0.5s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#studentTable tr,
+#userTable tr {
+  animation: rowIn 0.4s ease;
+}
+
+@keyframes rowIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#studentTable tr.editing {
+  background-color: #fff8e1;
+}
+
+.nav-tabs .nav-link {
+  cursor: pointer;
+}
+
+.btn {
+  transition: transform 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}

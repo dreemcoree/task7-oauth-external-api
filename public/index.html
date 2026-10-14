@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Task 7 - APIs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+  <nav class="navbar navbar-dark custom-navbar fixed-top">
+    <div class="container">
+      <span class="navbar-brand fw-bold">Task 7: APIs</span>
+      <div id="userBox" class="d-none">
+        <div class="d-flex align-items-center gap-2 text-white">
+          <span id="userLabel"></span>
+          <span id="roleBadge" class="badge"></span>
+          <button id="logoutBtn" class="btn btn-sm btn-outline-light">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+
+    <!-- LOGIN / REGISTER VIEW -->
+    <section id="authView">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-5">
+          <div class="card p-4 shadow-sm">
+
+            <ul class="nav nav-tabs mb-3">
+              <li class="nav-item"><button class="nav-link active" id="tabLogin" type="button">Login</button></li>
+              <li class="nav-item"><button class="nav-link" id="tabRegister" type="button">Register</button></li>
+            </ul>
+
+            <div id="authMessage" class="alert d-none"></div>
+
+            <form id="loginForm" novalidate>
+              <div class="mb-3">
+                <label class="form-label" for="loginUsername">Username</label>
+                <input type="text" class="form-control" id="loginUsername" autocomplete="username">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="loginPassword">Password</label>
+                <input type="password" class="form-control" id="loginPassword" autocomplete="current-password">
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+
+            <form id="registerForm" class="d-none" novalidate>
+              <div class="mb-3">
+                <label class="form-label" for="regUsername">Username</label>
+                <input type="text" class="form-control" id="regUsername" autocomplete="username">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="regEmail">Email</label>
+                <input type="text" class="form-control" id="regEmail" autocomplete="email">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="regPassword">Password</label>
+                <input type="password" class="form-control" id="regPassword" autocomplete="new-password">
+                <small class="text-muted">At least 8 characters, with a letter and a number.</small>
+              </div>
+              <button type="submit" class="btn btn-success w-100">Create Account</button>
+            </form>
+
+            <div class="text-center text-muted my-3">or</div>
+            <a href="/api/auth/github" class="btn btn-dark w-100 github-btn">Continue with GitHub</a>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APP VIEW (only after login) -->
+    <section id="appView" class="d-none">
+
+      <!-- Weather widget (uses the external API through our server) -->
+      <div class="card p-4 shadow-sm mb-4">
+        <h4 class="mb-3">Weather (external API)</h4>
+        <form id="weatherForm" class="row g-2" novalidate>
+          <div class="col-12 col-sm">
+            <input type="text" class="form-control" id="cityInput" placeholder="Enter a city, e.g. Chennai" autocomplete="off">
+          </div>
+          <div class="col-12 col-sm-auto">
+            <button type="submit" id="weatherBtn" class="btn btn-primary w-100">Get Weather</button>
+          </div>
+        </form>
+        <div id="weatherResult" class="mt-3"></div>
+      </div>
+
+      <div class="row g-4">
+
+        <div class="col-12 col-lg-4">
+          <div class="card p-4 shadow-sm">
+            <h4 id="formTitle" class="mb-3">Add Student</h4>
+            <div id="messageBox" class="alert d-none"></div>
+
+            <form id="studentForm" novalidate>
+              <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" class="form-control" id="name" autocomplete="off">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="email">Email</label>
+                <input type="text" class="form-control" id="email" autocomplete="off">
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="course">Course</label>
+                <select class="form-select" id="course">
+                  <option value="">-- Select a course --</option>
+                  <option>Web Development</option>
+                  <option>Data Science</option>
+                  <option>Cloud Computing</option>
+                  <option>Cyber Security</option>
+                </select>
+              </div>
+              <button type="submit" id="saveBtn" class="btn btn-primary w-100">Add Student</button>
+              <button type="button" id="cancelBtn" class="btn btn-outline-secondary w-100 mt-2 d-none">Cancel Edit</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-8">
+          <div class="card p-4 shadow-sm">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+              <h4 class="mb-0">Students <span class="badge bg-primary" id="totalCount">0</span></h4>
+              <input type="text" id="searchInput" class="form-control search-box" placeholder="Search...">
+            </div>
+
+            <div id="emptyState" class="alert alert-secondary d-none">No students found.</div>
+
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th id="ownerHeader" class="d-none">Owner</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ADMIN PANEL -->
+      <div id="adminPanel" class="card p-4 shadow-sm mt-4 d-none">
+        <h4 class="mb-3">Admin Panel: All Users</h4>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead>
+              <tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Students</th></tr>
+            </thead>
+            <tbody id="userTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
